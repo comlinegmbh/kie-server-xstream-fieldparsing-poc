@@ -2,8 +2,8 @@ Kie-Server ignores the "ignore-unknown-elements" Parameter
 ==========================================================
 
 When executing a BatchCommand with a custom data-model, the kie-server should interpret the header 
-**x-kie-contenttype** with an value of **XSTREAM;ignore-unknown-elements=true** to ignore any additional
-elements in the data-model, like mentioned in Issue JBPM-9558.
+**x-kie-contenttype** with a value of **XSTREAM;ignore-unknown-elements=true** to ignore any additional
+elements in the data-model, like mentioned in issue JBPM-9558.
 
 We need this behaviour, because we want a loose coupling between the kie-client and the kie-server.
 If the client gets updated with a new version of the data-model, the server should run with the older
@@ -18,12 +18,12 @@ is used, which sets the value to false:
     }
 
 	
-Setting the default to "true" solve the problem but this perhaps is not the desired solution.
+Setting the default to "true" solve the problem but perhaps this is not the desired solution.
 
-Using the **MarshallingFormat.buildParameters()** to extract the parameter an pass it to the **XStreamMarshaller.unmarshall()**
+Using the **MarshallingFormat.buildParameters()** to extract the parameter and pass it to the **XStreamMarshaller.unmarshall()**
 function seems to be the right way. 
 Therefore the **KieServerResource.executeCommands()** function must be extended to pass the parameters from the header to the underlying layers:
 
     ServiceResponsesList result = delegate.executeScript(command, MarshallerHelper.getFormat(contentType), null);
 
-Maybe it would be considerable to change the **MarshallingFormat** form *enum* to a "normal" value object so the parameters could be transferred via instance variables.
+Maybe it would be considerable to change the **MarshallingFormat** form *enum* to a "normal" data object so the parameters could be transferred via instance variables.
