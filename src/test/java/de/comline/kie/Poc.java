@@ -16,6 +16,7 @@ package de.comline.kie;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -104,6 +105,8 @@ public class Poc extends KieServerBaseIntegrationTest {
 	@Override
     protected KieServicesClient createDefaultClient() throws Exception {
         KieServicesConfiguration configuration = KieServicesFactory.newRestConfiguration(TestConfig.getKieServerHttpUrl(), null, null);
+        configuration.setHeaders(Collections.singletonMap("x-kie-contenttype", "XSTREAM;ignore-unknown-elements=true"));
+
         return createDefaultClient(configuration, MarshallingFormat.XSTREAM);
     }
 }
